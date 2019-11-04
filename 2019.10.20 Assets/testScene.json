@@ -1,0 +1,123 @@
+{
+    "Core": {
+        "Debug": false,
+        "LogLevel": 4
+    },
+    "Sampler": {
+        "Plugin": "Halton",
+        "Type": "Faure",
+        "MaxPermTableSize": 500
+    },
+    "Driver": {
+        "Plugin": "FixedSampler",
+        "Sample": 1024,
+        "Output": "output.exr",
+        "Width": 1920,
+        "Height": 1080,
+        "FiltBadColor": false
+    },
+    "Integrator": {
+        "Plugin": "PathTracer",
+        "MaxDepth": 12,
+        "Sample": 8
+    },
+    "LightSampler": {
+        "Plugin": "UniformSampler"
+    },
+    "Camera": {
+        "Plugin": "PerspectiveCamera",
+        "Device": {
+            "Sensor": [
+                36.0,
+                24.0
+            ]
+        },
+        "FocalLength": 85.0,
+        "FStop": 1.4,
+        "Position": [
+            0.0,
+            0.1,
+            0.7
+        ],
+        "Posture": {
+            "LookAt": [
+                0.0,
+                0.1,
+                0.0
+            ],
+            "Up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        }
+    },
+    "Assets": [
+        {
+            "Name": "Sun",
+            "Lum": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Direction": [
+                -0.3,
+                0.0,
+                1.0
+            ],
+            "Distance": 100
+        },
+        {
+            "Name": "Bunny",
+            "Path": "Res/bunny.mesh"
+        },
+        {
+            "Name": "Plastic",
+            "Diffuse": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            },
+            "Specular": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            },
+            "Roughness": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.5,
+                    0.5,
+                    0.0
+                ]
+            }
+        }
+    ],
+    "Scene": {
+        "Children": [
+            {
+                "Plugin": "TriMesh",
+                "NodeType": "Geometry",
+                "Mesh": {
+                    "Plugin": "RawMesh",
+                    "AssetName": "Bunny"
+                },
+                "Material": {
+                    "Plugin": "Plastic",
+                    "AssetName": "Plastic"
+                }
+            },
+            {
+                "Plugin": "DirectionalLight",
+                "NodeType": "Light",
+                "AssetName": "Sun"
+            }
+        ]
+    }
+}
