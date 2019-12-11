@@ -1,0 +1,240 @@
+{
+    "Core": {
+        "Debug": false,
+        "LogLevel": 4
+    },
+    "Sampler": {
+        "Plugin": "Halton",
+        "Type": "Faure",
+        "MaxPermTableSize": 500
+    },
+    "Driver": {
+        "Plugin": "FixedSampler",
+        "SampleCount": 1000,
+        "SamplePerLaunch": 1,
+        "Output": "output.exr",
+        "FilmSize": [
+            1920,
+            1080
+        ],
+        "FiltBadColor": false,
+        "Integrator": {
+            "Plugin": "PathTracer",
+            "MaxDepth": 12
+        },
+        "Photographer": {
+            "Plugin": "CameraAdapter",
+            "Camera": {
+                "Plugin": "PerspectiveCamera",
+                "Sensor": [
+                    36.0,
+                    24.0
+                ]
+            },
+            "FocalLength": 85.0,
+            "FStop": 1.4,
+            "Position": [
+                -0.1,
+                0.1,
+                0.9
+            ],
+            "Posture": {
+                "LookAt": [
+                    0.0,
+                    0.1,
+                    0.03
+                ],
+                "Up": [
+                    0.0,
+                    1.0,
+                    0.0
+                ]
+            }
+        },
+        "Environment": {
+            "Plugin": "ConstantEnvironment",
+            "Lum": [
+                0.2,
+                0.2,
+                0.2
+            ]
+        }
+    },
+    "LightSampler": {
+        "Plugin": "UniformSampler"
+    },
+    "Assets": [
+        {
+            "Name": "Sun",
+            "Lum": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Direction": [
+                -1.0,
+                -5.0,
+                -1.0
+            ]
+        },
+        {
+            "Name": "PointLight",
+            "Lum": [
+                25.0,
+                25.0,
+                25.0
+            ],
+            "Position": [
+                1.0,
+                0.1,
+                1.0
+            ]
+        },
+        {
+            "Name": "SpotLight",
+            "Lum": [
+                25.0,
+                25.0,
+                25.0
+            ],
+            "Position": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "SpotDirection": [
+                0.0,
+                -10.0,
+                0.0
+            ],
+            "CutOff": 2.0,
+            "OuterCutOff": 10.0
+        },
+        {
+            "Name": "Plastic",
+            "Diffuse": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.2,
+                    0.2,
+                    0.2
+                ]
+            },
+            "Specular": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.1,
+                    0.1,
+                    0.1
+                ]
+            },
+            "Roughness": {
+                "Plugin": "Constant",
+                "Color": [
+                    0.5,
+                    0.5,
+                    0.0
+                ]
+            }
+        },
+        {
+            "Name": "MDLPlasticGray",
+            "Module": "::nvidia::vMaterials::Design::Plastic::Hard",
+            "Material": "plastic_hard_light_gray"
+        },
+        {
+            "Name": "MDLPlasticOrange",
+            "Module": "::nvidia::vMaterials::Design::Plastic::Hard",
+            "Material": "plastic_hard_orange"
+        },
+        {
+            "Name": "MDLMirror",
+            "Module": "::nvidia::vMaterials::AEC::Glass::Mirror",
+            "Material": "mirror_bright"
+        },
+        {
+            "Name": "MDLCarpet",
+            "Module": "::nvidia::vMaterials::AEC::Carpet::Carpet_Squares",
+            "Material": "carpet_squares_brown"
+        },
+        {
+            "Name": "Mesh",
+            "Accel": {
+                "Plugin": "TriMeshAccel",
+                "Mesh": {
+                    "Plugin": "RawMesh",
+                    "Path": "Res/bunny.mesh"
+                }
+            },
+            "Material": {
+                "Plugin": "MDLMaterial",
+                "AssetName": "MDLPlasticOrange"
+            }
+        }
+    ],
+    "Scene": {
+        "Children": [
+            {
+                "Plugin": "TriMesh",
+                "NodeType": "Geometry",
+                "AssetName": "Mesh"
+            },
+            {
+                "Plugin": "Node",
+                "NodeType": "Geometry",
+                "Transform": {
+                    "Trans": [
+                        0.1,
+                        0.02,
+                        0.07
+                    ],
+                    "Scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                },
+                "Children": [
+                    {
+                        "Plugin": "TriMesh",
+                        "NodeType": "Geometry",
+                        "AssetName": "Mesh"
+                    }
+                ]
+            },
+            {
+                "Plugin": "Node",
+                "NodeType": "Geometry",
+                "Transform": {
+                    "Trans": [
+                        0.0,
+                        0.04,
+                        0.0
+                    ]
+                },
+                "Children": [
+                    {
+                        "Plugin": "TriMesh",
+                        "NodeType": "Geometry",
+                        "Accel": {
+                            "Plugin": "TriMeshAccel",
+                            "Mesh": {
+                                "Plugin": "RawMesh",
+                                "Path": "Res/plane.mesh"
+                            }
+                        },
+                        "Material": {
+                            "Plugin": "MDLMaterial",
+                            "AssetName": "MDLPlasticGray"
+                        }
+                    }
+                ]
+            },
+            {
+                "Plugin": "SpotLight",
+                "NodeType": "Light",
+                "AssetName": "SpotLight"
+            }
+        ]
+    }
+}
